@@ -1,42 +1,35 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import joblib
-
-app = Flask(__name__)
 
 model = joblib.load("model.pkl")
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+st.title("Predicción de Diabetes")
 
+pregnancies = st.number_input("Pregnancies", min_value=0)
+glucose = st.number_input("Glucose", min_value=0)
+bloodpressure = st.number_input("Blood Pressure", min_value=0)
+skinthickness = st.number_input("Skin Thickness", min_value=0)
+insulin = st.number_input("Insulin", min_value=0)
+bmi = st.number_input("BMI", min_value=0.0)
+pedigree = st.number_input("Pedigree Function", min_value=0.0)
+age = st.number_input("Age", min_value=0)
 
-@app.route("/predict", methods=["POST"])
-def predict():
+if st.button("Predict"):
 
-    values = [
-        float(request.form["pregnancies"]),
-        float(request.form["glucose"]),
-        float(request.form["bloodpressure"]),
-        float(request.form["skinthickness"]),
-        float(request.form["insulin"]),
-        float(request.form["bmi"]),
-        float(request.form["pedigree"]),
-        float(request.form["age"])
-    ]
+    values = [[
+        pregnancies,
+        glucose,
+        bloodpressure,
+        skinthickness,
+        insulin,
+        bmi,
+        pedigree,
+        age
+    ]]
 
-    prediction = model.predict([values])
+    prediction = model.predict(values)
 
-    result = (
-        "Posible diabetes"
-        if prediction[0] == 1
-        else "No presenta diabetes"
-    )
-
-    return render_template(
-        "index.html",
-        prediction=result
-    )
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    if prediction[0] == 1:
+        st.error("Posible diabetes")
+    else:
+        st.success("No presenta diabetes")
