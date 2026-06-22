@@ -25,5 +25,5 @@ model.fit(X_train, y_train)
 joblib.dump(model, "model.pkl")
 
 print("Modelo guardado correctamente")
-'''link del codigo  https://proyecto-flask-kuew.onrender.com/ '''
+'''link del codigo  https://proyecto-stremalit.onrender.com '''
 
