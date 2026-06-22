@@ -33,3 +33,4 @@ if st.button("Predict"):
         st.error("Posible diabetes")
     else:
         st.success("No presenta diabetes")
+
